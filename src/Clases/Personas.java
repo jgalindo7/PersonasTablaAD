@@ -4,16 +4,22 @@
  * and open the template in the editor.
  */
 
-package clases;
+package Clases;
 
 /**
  *
  * @author jgalindo7
  */
-public class Persona {
+public class Personas {
     private String cedula;
     private String nombre;
     private String apellido;
+
+    public Personas(String cedula, String nombre, String apellido) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
 
     public String getCedula() {
         return cedula;
@@ -39,4 +45,5 @@ public class Persona {
         this.apellido = apellido;
     }
     
-}
+} 
+

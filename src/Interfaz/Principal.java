@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package interfaz;
+package Interfaz;
 
 /**
  *
@@ -29,40 +29,34 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        lblimagen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        mnOpciones = new javax.swing.JMenu();
-        mnAgregar = new javax.swing.JMenuItem();
-        mnReportes = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        mnSalir = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("PERSONAS");
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/portada.jpg"))); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 710, 460));
+        lblimagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/portada.jpg"))); // NOI18N
+        jPanel1.add(lblimagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 720, 420));
 
-        mnOpciones.setText("Opciones");
+        jMenu2.setText("Opciones");
 
-        mnAgregar.setText("Agregar");
-        mnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnAgregarActionPerformed(evt);
-            }
-        });
-        mnOpciones.add(mnAgregar);
+        jMenuItem1.setText("Agregar");
+        jMenu2.add(jMenuItem1);
 
-        mnReportes.setText("Reportes");
-        mnOpciones.add(mnReportes);
-        mnOpciones.add(jSeparator1);
+        jMenuItem2.setText("Reportes");
+        jMenu2.add(jMenuItem2);
+        jMenu2.add(jSeparator1);
 
-        mnSalir.setText("Salir");
-        mnOpciones.add(mnSalir);
+        jMenuItem3.setText("Salir");
+        jMenu2.add(jMenuItem3);
 
-        jMenuBar1.add(mnOpciones);
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -70,20 +64,16 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(754, 504));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void mnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAgregarActionPerformed
-       Agregar  a = new Agregar (this, true);
-       a.setVisible(true);
-    }//GEN-LAST:event_mnAgregarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,13 +111,13 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JMenuItem mnAgregar;
-    private javax.swing.JMenu mnOpciones;
-    private javax.swing.JMenuItem mnReportes;
-    private javax.swing.JMenuItem mnSalir;
+    private javax.swing.JLabel lblimagen;
     // End of variables declaration//GEN-END:variables
 }
