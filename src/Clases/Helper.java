@@ -3,22 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Clases;
 
-
 import java.awt.Component;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author jgalindo7
  */
 public class Helper {
-   public static void mensaje(Component ventana, String mensaje, int tipo) {
+
+    public static void mensaje(Component ventana, String mensaje, int tipo) {
         switch (tipo) {
             case 1:
                 JOptionPane.showMessageDialog(ventana, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -172,9 +181,9 @@ public class Helper {
         return aux;
 
     }
-    
-     public static String recorridoHaciaArriba(int[][] m, int j, int in, int fin) {
-      
+
+    public static String recorridoHaciaArriba(int[][] m, int j, int in, int fin) {
+
         String aux = "";
         for (int i = in; i >= fin; i--) {
             aux = aux + m[i][j] + ", ";
@@ -192,9 +201,9 @@ public class Helper {
         return aux;
 
     }
-    
-     public static String recorridoHaciaAbajo(int[][] m, int j, int in, int fin) {
-      
+
+    public static String recorridoHaciaAbajo(int[][] m, int j, int in, int fin) {
+
         String aux = "";
         for (int i = in; i < fin; i++) {
             aux = aux + m[i][j] + ", ";
@@ -214,29 +223,30 @@ public class Helper {
                 aux = aux + Helper.recorridoHaciaAbajo(m, j);
             }
         }
-        aux = aux.substring(0, aux.length()-2)+".";
+        aux = aux.substring(0, aux.length() - 2) + ".";
         return aux;
     }
-    
+
     public static String recorridoHaciaIzquierda(int[][] m, int i) {
         int nc = m[0].length;
         String aux = "";
-        for (int j = nc-1; j >= 0; j--) {
+        for (int j = nc - 1; j >= 0; j--) {
             aux = aux + m[i][j] + ", ";
         }
         return aux;
 
     }
-    
-     public static String recorridoHaciaIzquierda(int[][] m, int i, int in, int fin) {
-        
+
+    public static String recorridoHaciaIzquierda(int[][] m, int i, int in, int fin) {
+
         String aux = "";
-        for (int j =in; j >= fin; j--) {
+        for (int j = in; j >= fin; j--) {
             aux = aux + m[i][j] + ", ";
         }
         return aux;
 
     }
+
     public static String recorridoHaciaDerecha(int[][] m, int i) {
         int nc = m[0].length;
         String aux = "";
@@ -246,9 +256,9 @@ public class Helper {
         return aux;
 
     }
-    
-    public static String recorridoHaciaDerecha(int[][] m, int i,int in, int fin) {
-       
+
+    public static String recorridoHaciaDerecha(int[][] m, int i, int in, int fin) {
+
         String aux = "";
         for (int j = in; j < fin; j++) {
             aux = aux + m[i][j] + ", ";
@@ -256,36 +266,72 @@ public class Helper {
         return aux;
 
     }
-    
-    public static String recorridoDos(JTable tabla1){
+
+    public static String recorridoDos(JTable tabla1) {
         int m[][] = pasoDeDatos(tabla1);
         int nf = m.length;
-        String aux="";
+        String aux = "";
         for (int i = 0; i < nf; i++) {
-            if(i%2==0){
-                aux=aux+ recorridoHaciaIzquierda(m, i);
-            }else{
-                aux=aux+recorridoHaciaDerecha(m, i);
+            if (i % 2 == 0) {
+                aux = aux + recorridoHaciaIzquierda(m, i);
+            } else {
+                aux = aux + recorridoHaciaDerecha(m, i);
             }
-            
+
         }
-        aux = aux.substring(0, aux.length()-2)+".";
+        aux = aux.substring(0, aux.length() - 2) + ".";
         return aux;
     }
-    
-    public static void llenarTabla(JTable tabla, ArrayList<Personas> personas){
+
+    public static void llenarTabla(JTable tabla, String ruta) {
         DefaultTableModel tm;
         int nf;
-        tm = (DefaultTableModel)tabla.getModel();
+        ArrayList<Personas> personas = traerDatos(ruta);
+        tm = (DefaultTableModel) tabla.getModel();
         limpiadoTabla(tabla);
         nf = personas.size();
         tm.setRowCount(nf);
         for (int i = 0; i < nf; i++) {
-           tabla.setValueAt(i+1, i, 0);
-           tabla.setValueAt(personas.get(i).getCedula(), i, 1);
-           tabla.setValueAt(personas.get(i).getNombre(), i, 2);
-           tabla.setValueAt(personas.get(i).getApellido(), i, 3);
+            tabla.setValueAt(i + 1, i, 0);
+            tabla.setValueAt(personas.get(i).getCedula(), i, 1);
+            tabla.setValueAt(personas.get(i).getNombre(), i, 2);
+            tabla.setValueAt(personas.get(i).getApellido(), i, 3);
         }
     }
-    
+
+    public static ArrayList traerDatos(String ruta) {
+        FileInputStream archivo;
+        ObjectInputStream entrada;
+        ArrayList personas = new ArrayList();
+        Object p;
+
+        try {
+            archivo = new FileInputStream(ruta);
+            entrada = new ObjectInputStream(archivo);
+            while ((p = entrada.readObject()) != null) {
+                personas.add(p);
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return personas;
+    }
+
+    public static void Volcado(ObjectOutputStream salida, ArrayList Personas) {
+
+        for (int i = 0; i < Personas.size(); i++) {
+            try {
+                salida.writeObject(Personas.get(i));
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+        }
+    }
+
 }
+

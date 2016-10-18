@@ -6,11 +6,14 @@
 
 package Clases;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 /**
  *
  * @author jgalindo7
  */
-public class Personas {
+public class Personas implements java.io.Serializable{
     private String cedula;
     private String nombre;
     private String apellido;
@@ -45,6 +48,8 @@ public class Personas {
         this.apellido = apellido;
     }
     
-    
+    public void Guardar(ObjectOutputStream salida) throws IOException{
+        salida.writeObject(this);
+    }
             
 }

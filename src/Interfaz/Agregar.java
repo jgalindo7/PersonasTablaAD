@@ -7,7 +7,13 @@ package Interfaz;
 
 import Clases.Helper;
 import Clases.Personas;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,12 +25,23 @@ public class Agregar extends javax.swing.JDialog {
     /**
      * Creates new form Agregar
      */
+    String ruta;
+    ObjectOutputStream salida;
     ArrayList<Personas> personas;
 
     public Agregar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        personas = new ArrayList();
+        ruta = "src/datos/personas.txt";
+
+        try {
+            //ArrayList<Personas> personas;
+            salida = new ObjectOutputStream(new FileOutputStream(ruta));
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        Helper.llenarTabla(tblTablaPersonas, ruta);
     }
 
     /**
@@ -168,9 +185,13 @@ public class Agregar extends javax.swing.JDialog {
         apellido = txtApellido.getText();
 
         Personas p = new Personas(cedula, nombre, apellido);
-        personas.add(p);
+        try {
+            p.Guardar(salida);
+        } catch (IOException ex) {
+            Logger.getLogger(Agregar.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        Helper.llenarTabla(tblTablaPersonas, personas);
+        Helper.llenarTabla(tblTablaPersonas, ruta);
 
         txtCedula.setText("");
         txtNombre.setText("");
@@ -181,18 +202,27 @@ public class Agregar extends javax.swing.JDialog {
     }//GEN-LAST:event_cmdGuardarActionPerformed
 
     private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
-int i, op;
+        int i, op;
         op = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar a esta persona?", "Eliminar", JOptionPane.YES_NO_OPTION);
+        
+        ArrayList<Personas> personas = Helper.traerDatos(ruta);
         if (op == JOptionPane.YES_OPTION) {
             i = tblTablaPersonas.getSelectedRow();
             personas.remove(i);
-            Helper.llenarTabla(tblTablaPersonas, personas);
+            try {
+                salida = new ObjectOutputStream(new FileOutputStream(ruta));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Agregar.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Agregar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Helper.Volcado(salida, personas);
+            Helper.llenarTabla(tblTablaPersonas, ruta);
             txtCedula.setText("");
             txtNombre.setText("");
             txtApellido.setText("");
             txtCedula.requestFocusInWindow();
         }
-    
     }//GEN-LAST:event_cmdEliminarActionPerformed
 
     private void cmdLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLimpiarActionPerformed
@@ -210,7 +240,9 @@ int i, op;
     private void tblTablaPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTablaPersonasMouseClicked
        int i;
         Personas p;
+        ArrayList<Personas> personas = Helper.traerDatos(ruta);
         i = tblTablaPersonas.getSelectedRow();
+        
         p = personas.get(i);
 
         txtCedula.setText(p.getCedula());
@@ -233,32 +265,21 @@ int i, op;
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } 
-
-catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Agregar.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Agregar.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Agregar.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Agregar.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -268,7 +289,7 @@ catch (javax.swing.UnsupportedLookAndFeelException ex) {
                 Agregar dialog = new Agregar(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
-        public void windowClosing(java.awt.event.WindowEvent e) {
+                    public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });
