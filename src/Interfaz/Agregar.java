@@ -7,7 +7,7 @@ package Interfaz;
 
 import Clases.Helper;
 import Clases.Personas;
-import clases.Persona;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,9 +19,12 @@ public class Agregar extends javax.swing.JDialog {
     /**
      * Creates new form Agregar
      */
+    ArrayList<Personas> personas;
+
     public Agregar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        personas = new ArrayList();
     }
 
     /**
@@ -47,7 +50,7 @@ public class Agregar extends javax.swing.JDialog {
         cmdLimpiar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblPersonas = new javax.swing.JTable();
+        tblTablaPersonas = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -103,7 +106,7 @@ public class Agregar extends javax.swing.JDialog {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Personas"));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblPersonas.setModel(new javax.swing.table.DefaultTableModel(
+        tblTablaPersonas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -119,21 +122,21 @@ public class Agregar extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        tblPersonas.addAncestorListener(new javax.swing.event.AncestorListener() {
+        tblTablaPersonas.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                tblPersonasAncestorAdded(evt);
+                tblTablaPersonasAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
-        tblPersonas.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblTablaPersonas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblPersonasMouseClicked(evt);
+                tblTablaPersonasMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblPersonas);
+        jScrollPane1.setViewportView(tblTablaPersonas);
 
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, 230));
 
@@ -164,30 +167,32 @@ public class Agregar extends javax.swing.JDialog {
         nombre = txtNombre.getText();
         apellido = txtApellido.getText();
 
-        Persona p = new Persona(cedula, nombre, apellido);
-        Personas.add(p);
+        Personas p = new Personas(cedula, nombre, apellido);
+        personas.add(p);
 
-        Helper.llenarTabla(tblPersonas, Personas);
+        Helper.llenarTabla(tblTablaPersonas, personas);
 
         txtCedula.setText("");
         txtNombre.setText("");
         txtApellido.setText("");
         txtCedula.requestFocusInWindow();
 
+
     }//GEN-LAST:event_cmdGuardarActionPerformed
 
     private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
-        int i, op;
+int i, op;
         op = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar a esta persona?", "Eliminar", JOptionPane.YES_NO_OPTION);
         if (op == JOptionPane.YES_OPTION) {
-            i = tblPersonas.getSelectedRow();
-            Personas.remove(i);
-            Helper.llenarTabla(tblPersonas, Personas);
+            i = tblTablaPersonas.getSelectedRow();
+            personas.remove(i);
+            Helper.llenarTabla(tblTablaPersonas, personas);
             txtCedula.setText("");
             txtNombre.setText("");
             txtApellido.setText("");
             txtCedula.requestFocusInWindow();
         }
+    
     }//GEN-LAST:event_cmdEliminarActionPerformed
 
     private void cmdLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLimpiarActionPerformed
@@ -198,20 +203,21 @@ public class Agregar extends javax.swing.JDialog {
         txtCedula.requestFocusInWindow();
     }//GEN-LAST:event_cmdLimpiarActionPerformed
 
-    private void tblPersonasAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblPersonasAncestorAdded
-       
-    }//GEN-LAST:event_tblPersonasAncestorAdded
+    private void tblTablaPersonasAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblTablaPersonasAncestorAdded
 
-    private void tblPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPersonasMouseClicked
-    int i;
-        Persona p;
-        i = tblPersonas.getSelectedRow();
-        p = Personas.get(i);
+    }//GEN-LAST:event_tblTablaPersonasAncestorAdded
+
+    private void tblTablaPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTablaPersonasMouseClicked
+       int i;
+        Personas p;
+        i = tblTablaPersonas.getSelectedRow();
+        p = personas.get(i);
 
         txtCedula.setText(p.getCedula());
         txtNombre.setText(p.getNombre());
         txtApellido.setText(p.getApellido());
-    }//GEN-LAST:event_tblPersonasMouseClicked
+
+    }//GEN-LAST:event_tblTablaPersonasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -227,16 +233,32 @@ public class Agregar extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+                
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Agregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Agregar.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Agregar.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Agregar.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Agregar.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -246,7 +268,7 @@ public class Agregar extends javax.swing.JDialog {
                 Agregar dialog = new Agregar(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
+        public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });
@@ -268,7 +290,7 @@ public class Agregar extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblPersonas;
+    private javax.swing.JTable tblTablaPersonas;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtNombre;
